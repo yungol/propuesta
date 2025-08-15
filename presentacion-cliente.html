@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta - Sistema Recolección</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        @media print {
+            .page-break { page-break-before: always; }
+            body { -webkit-print-color-adjust: exact; }
+        }
+        
+        .mockup-frame {
+            border: 8px solid #e5e7eb;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: white;
+            overflow: hidden;
+        }
+        
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .desktop-frame {
+            width: 100%;
+            max-width: 1200px;
+            height: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .view-content {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: rgba(251, 191, 36, 0.1);
+            color: #d97706;
+        }
+        
+        .status-ready {
+            background: rgba(34, 197, 94, 0.1);
+            color: #059669;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <!-- Portada -->
+    <div class="min-h-screen flex items-center justify-center gradient-bg text-white">
+        <div class="text-center">
+            <div class="mb-8">
+                <span class="material-icons text-8xl mb-4">local_shipping</span>
+            </div>
+            <h1 class="text-6xl font-bold mb-4">La Recolección</h1>
+            <h2 class="text-3xl mb-8">Sistema de Gestión de Recolección y Almacén</h2>
+            <div class="glass-effect text-gray-800 p-8 rounded-3xl max-w-2xl mx-auto">
+                <p class="text-xl mb-4">Propuesta de Interfaz de Usuario</p>
+                <p class="text-lg">Mockups interactivos para demostración al cliente</p>
+                <div class="mt-8 flex justify-center space-x-8">
+                    <div class="text-center">
+                        <span class="material-icons text-3xl text-blue-600">phone_android</span>
+                        <p class="text-sm mt-2">Vistas Móviles</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="material-icons text-3xl text-blue-600">desktop_windows</span>
+                        <p class="text-sm mt-2">Vista Escritorio</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista 1: Login Móvil -->
+    <div class="page-break min-h-screen bg-white p-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">1. Login Móvil</h2>
+                <p class="text-xl text-gray-600">Pantalla de inicio de sesión para dispositivos móviles con autenticación por email y contraseña</p>
+            </div>
+            
+            <div class="phone-frame mockup-frame">
+                <div class="gradient-bg h-full relative overflow-hidden">
+                    <div class="floating-shape w-20 h-20 top-16 left-8" style="animation-delay: 0s;"></div>
+                    <div class="floating-shape w-32 h-32 top-96 right-8" style="animation-delay: 2s;"></div>
+                    <div class="floating-shape w-16 h-16 top-64 right-20" style="animation-delay: 4s;"></div>
+                    
+                    <div class="flex items-center justify-center h-full p-6">
+                        <div class="glass-effect rounded-3xl p-8 w-full shadow-2xl">
+                            <div class="text-center mb-8">
+                                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-icons text-blue-600 text-3xl">local_shipping</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">¡Bienvenido!</h3>
+                                <p class="text-gray-600">Inicia sesión en tu cuenta</p>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="relative">
+                                    <input type="email" placeholder="Correo electrónico" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl">
+                                    <span class="material-icons absolute left-3 top-3 text-gray-400">email</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="password" placeholder="Contraseña" class="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl">
+                                    <span class="material-icons absolute left-3 top-3 text-gray-400">lock</span>
+                                    <span class="material-icons absolute right-3 top-3 text-gray-400">visibility</span>
+                                </div>
+                                
+                                <button class="w-full bg-gray-700 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl">
+                                    Iniciar Sesión
+                                </button>
+                                
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600 mb-4">¿No tienes cuenta?</p>
+                                    <button class="w-full border border-gray-300 text-gray-700 font-medium py-2 rounded-xl">
+                                        <span class="material-icons mr-2">person_add</span>
+                                        Crear Cuenta
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista 2: Registro Móvil -->
+    <div class="page-break min-h-screen bg-white p-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">2. Registro Móvil</h2>
+                <p class="text-xl text-gray-600">Registro de usuarios con selección de tipo: Recolector o Almacén</p>
+            </div>
+            
+            <div class="phone-frame mockup-frame">
+                <div class="gradient-bg h-full relative overflow-hidden">
+                    <div class="floating-shape w-20 h-20 top-16 left-8" style="animation-delay: 0s;"></div>
+                    <div class="floating-shape w-32 h-32 top-96 right-8" style="animation-delay: 2s;"></div>
+                    
+                    <div class="flex items-center justify-center h-full p-6">
+                        <div class="glass-effect rounded-3xl p-8 w-full shadow-2xl max-h-full overflow-y-auto">
+                            <div class="text-center mb-6">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">Crear Cuenta</h3>
+                                <p class="text-gray-600">Únete a La Vaquita</p>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="border-2 border-blue-500 rounded-xl p-3 text-center bg-blue-50">
+                                        <span class="material-icons text-blue-600 text-2xl">person</span>
+                                        <p class="text-sm font-medium text-blue-800">Recolector</p>
+                                    </div>
+                                    <div class="border-2 border-gray-300 rounded-xl p-3 text-center">
+                                        <span class="material-icons text-gray-400 text-2xl">warehouse</span>
+                                        <p class="text-sm font-medium text-gray-600">Almacén</p>
+                                    </div>
+                                </div>
+                                
+                                <input type="text" placeholder="Nombre completo" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl">
+                                <input type="email" placeholder="Correo electrónico" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl">
+                                <input type="tel" placeholder="Teléfono" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl">
+                                <input type="password" placeholder="Contraseña" class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl">
+                                
+                                <button class="w-full bg-gray-700 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl">
+                                    <span class="material-icons mr-2">person_add</span>
+                                    Crear Cuenta
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista 3: Programar Recolección -->
+    <div class="page-break min-h-screen bg-white p-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">3. Programar Recolección</h2>
+                <p class="text-xl text-gray-600">Interface para que el almacén programe recolecciones con opciones de pago y carga de foto</p>
+            </div>
+            
+            <div class="phone-frame mockup-frame">
+                <div class="gradient-bg h-full relative overflow-hidden">
+                    <div class="floating-shape w-20 h-20 top-16 left-8" style="animation-delay: 0s;"></div>
+                    <div class="floating-shape w-32 h-32 top-96 right-8" style="animation-delay: 2s;"></div>
+                    
+                    <div class="flex items-center justify-center h-full p-6">
+                        <div class="glass-effect rounded-3xl p-6 w-full shadow-2xl max-h-full overflow-y-auto">
+                            <div class="text-center mb-6">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">Programar Recolección</h3>
+                                <p class="text-gray-600">Agenda una nueva recolección</p>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">
+                                        <span class="material-icons text-sm mr-1">location_on</span>
+                                        Dirección de Recolección
+                                    </label>
+                                    <textarea rows="2" placeholder="Carrera 43A #5-15, El Poblado" class="w-full px-4 py-3 border border-gray-300 rounded-xl"></textarea>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-gray-700 text-sm font-medium mb-2">
+                                            <span class="material-icons text-sm mr-1">event</span>
+                                            Fecha
+                                        </label>
+                                        <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-xl">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 text-sm font-medium mb-2">
+                                            <span class="material-icons text-sm mr-1">schedule</span>
+                                            Hora
+                                        </label>
+                                        <input type="time" class="w-full px-4 py-3 border border-gray-300 rounded-xl">
+                                    </div>
+                                </div>
+                                
+                                <div class="border-2 dashed border-gray-300 rounded-xl p-4 text-center">
+                                    <span class="material-icons text-gray-400 text-3xl">add_photo_alternate</span>
+                                    <p class="text-gray-600 text-sm">Foto del producto (opcional)</p>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <div class="border-2 border-blue-500 rounded-xl p-3 bg-blue-50">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <span class="material-icons text-blue-600 mr-3">payment</span>
+                                                <div>
+                                                    <p class="text-gray-800 font-medium">Pago Único</p>
+                                                    <p class="text-gray-600 text-sm">Por esta recolección</p>
+                                                </div>
+                                            </div>
+                                            <div class="w-5 h-5 rounded-full border-2 border-blue-600 bg-blue-600 flex items-center justify-center">
+                                                <div class="w-3 h-3 rounded-full bg-white"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="w-full bg-gray-700 hover:bg-blue-600 text-white font-semibold py-4 rounded-xl">
+                                    Programar Recolección
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista 4: Notificación Recolector -->
+    <div class="page-break min-h-screen bg-white p-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">4. Notificación Recolector</h2>
+                <p class="text-xl text-gray-600">Alerta para que el recolector acepte o rechace solicitudes de recolección</p>
+            </div>
+            
+            <div class="phone-frame mockup-frame">
+                <div class="gradient-bg h-full relative overflow-hidden">
+                    <div class="floating-shape w-20 h-20 top-16 left-8" style="animation-delay: 0s;"></div>
+                    <div class="floating-shape w-32 h-32 top-96 right-8" style="animation-delay: 2s;"></div>
+                    
+                    <div class="flex items-center justify-center h-full p-6">
+                        <div class="glass-effect rounded-3xl p-6 w-full shadow-2xl max-h-full overflow-y-auto">
+                            <div class="text-center mb-6">
+                                <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full mb-4 animate-pulse">
+                                    <span class="material-icons text-white text-2xl">notifications_active</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">Nueva Recolección</h3>
+                                <p class="text-gray-600">Solicitud disponible</p>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                                    <div class="flex items-center">
+                                        <span class="material-icons text-blue-600 mr-3">business</span>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Almacén solicitante</p>
+                                            <p class="font-semibold text-gray-800">La Vaquita Norte</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                                    <div class="flex items-start">
+                                        <span class="material-icons text-blue-600 mr-3">location_on</span>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Dirección</p>
+                                            <p class="font-semibold text-gray-800">Carrera 43A #5-15</p>
+                                            <p class="text-sm text-gray-600">El Poblado, Medellín</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-3">
+                                        <div class="flex items-center">
+                                            <span class="material-icons text-blue-600 mr-2">event</span>
+                                            <div>
+                                                <p class="text-xs text-gray-500">Fecha</p>
+                                                <p class="font-semibold">15 Ene</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-3">
+                                        <div class="flex items-center">
+                                            <span class="material-icons text-blue-600 mr-2">schedule</span>
+                                            <div>
+                                                <p class="text-xs text-gray-500">Hora</p>
+                                                <p class="font-semibold">14:30</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+                                    <div class="flex items-center">
+                                        <span class="material-icons text-red-600 mr-3">priority_high</span>
+                                        <div>
+                                            <p class="text-red-600 font-medium">Prioridad Alta</p>
+                                            <p class="text-xs text-red-500">Responder en 15 minutos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <button class="w-full bg-green-600 text-white font-semibold py-4 rounded-xl">
+                                        <span class="material-icons mr-2">check_circle</span>
+                                        Aceptar Recolección
+                                    </button>
+                                    <button class="w-full bg-gray-700 text-white font-semibold py-3 rounded-xl">
+                                        <span class="material-icons mr-2">cancel</span>
+                                        Rechazar
+                                    </button>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <p class="text-xs text-gray-500">Tiempo para responder</p>
+                                    <p class="text-lg font-bold text-orange-600">14:32</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista 5: Confirmar Entrega -->
+    <div class="page-break min-h-screen bg-white p-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">5. Confirmar Entrega</h2>
+                <p class="text-xl text-gray-600">Interface para que el transportista registre la entrega con foto y datos del receptor</p>
+            </div>
+            
+            <div class="phone-frame mockup-frame">
+                <div class="gradient-bg h-full relative overflow-hidden">
+                    <div class="floating-shape w-20 h-20 top-16 left-8" style="animation-delay: 0s;"></div>
+                    <div class="floating-shape w-32 h-32 top-96 right-8" style="animation-delay: 2s;"></div>
+                    
+                    <div class="flex items-center justify-center h-full p-6">
+                        <div class="glass-effect rounded-3xl p-6 w-full shadow-2xl max-h-full overflow-y-auto">
+                            <div class="text-center mb-6">
+                                <div class="inline-flex items-center justify-center w-16 h-16 bg-green-500 rounded-full mb-4">
+                                    <span class="material-icons text-white text-2xl">local_shipping</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">Confirmar Entrega</h3>
+                                <p class="text-gray-600">Registra la entrega del paquete</p>
+                            </div>
+                            
+                            <div class="bg-green-50 border-2 border-green-300 rounded-xl p-4 mb-6">
+                                <div class="flex items-center">
+                                    <span class="material-icons text-green-600 mr-3">check_circle</span>
+                                    <div>
+                                        <p class="font-semibold text-green-800">Paquete en destino</p>
+                                        <p class="text-sm text-green-600">Listo para confirmar</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                                    <div class="flex items-center">
+                                        <span class="material-icons text-blue-600 mr-3">qr_code</span>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Código</p>
+                                            <p class="font-semibold">#LV-2024-001523</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                                    <div class="flex items-start">
+                                        <span class="material-icons text-blue-600 mr-3">location_on</span>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Dirección de entrega</p>
+                                            <p class="font-semibold">Carrera 43A #5-15, Apto 801</p>
+                                            <p class="text-sm text-gray-600">El Poblado, Medellín</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">
+                                        <span class="material-icons text-sm mr-1">person</span>
+                                        Persona que recibe *
+                                    </label>
+                                    <input type="text" placeholder="Nombre completo" class="w-full px-4 py-3 border border-gray-300 rounded-xl">
+                                </div>
+                                
+                                <div class="border-2 dashed border-gray-300 rounded-xl p-4 text-center">
+                                    <span class="material-icons text-gray-400 text-3xl">add_photo_alternate</span>
+                                    <p class="text-gray-600 text-sm">Foto de confirmación *</p>
+                                </div>
+                                
+                                <button class="w-full bg-green-600 text-white font-semibold py-4 rounded-xl">
+                                    <span class="material-icons mr-2">check_circle</span>
+                                    Confirmar Entrega
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista 6: Dashboard Almacén - Estado Inicial -->
+    <div class="page-break min-h-screen bg-white p-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">6a. Dashboard Almacén - Vista Inicial</h2>
+                <p class="text-xl text-gray-600">Interface de escritorio para gestión y asignación de paquetes a transportistas</p>
+            </div>
+            
+            <div class="desktop-frame mockup-frame">
+                <div class="flex h-full">
+                    <!-- Sidebar -->
+                    <div class="w-64 bg-gradient-to-b from-gray-800 to-gray-700 text-white p-6">
+                        <div class="flex items-center mb-8">
+                            <span class="material-icons text-3xl mr-3">warehouse</span>
+                            <div>
+                                <h3 class="text-xl font-bold">La Vaquita</h3>
+                                <p class="text-gray-300 text-sm">Gestión de Almacén</p>
+                            </div>
+                        </div>
+                        
+                        <nav class="space-y-2">
+                            <div class="flex items-center p-3 rounded-lg bg-white/10">
+                                <span class="material-icons mr-3">dashboard</span>
+                                Dashboard
+                            </div>
+                        </nav>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="flex-1 p-4 bg-gray-50">
+                        <div class="bg-white rounded-xl p-6 h-full">
+                            <!-- Header -->
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-gray-800">Asignación de Paquetes</h3>
+                                    <p class="text-gray-600">Selecciona paquetes y asígnalos a transportistas</p>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="gradient-bg px-4 py-2 rounded-lg text-white">
+                                        <p class="text-sm opacity-90">Paquetes pendientes</p>
+                                        <p class="text-xl font-bold">12</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-12 gap-6">
+                                <!-- Packages Section -->
+                                <div class="col-span-8">
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="flex justify-between items-center">
+                                            <div class="flex space-x-2">
+                                                <button class="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm">
+                                                    Todos (15)
+                                                </button>
+                                                <button class="px-4 py-2 rounded-lg text-sm">
+                                                    Pendientes (12)
+                                                </button>
+                                            </div>
+                                            <input 
+                                                type="text" 
+                                                placeholder="Buscar por código..."
+                                                class="px-3 py-2 border border-gray-300 rounded-lg w-64"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- Package List -->
+                                    <div class="space-y-3">
+                                        <div class="p-4 border rounded-lg bg-white hover:shadow-md transition-shadow">
+                                            <div class="flex justify-between items-start mb-3">
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" class="mr-3">
+                                                    <div>
+                                                        <h4 class="font-semibold">LV-2024-001523</h4>
+                                                        <span class="status-badge status-pending">Pendiente</span>
+                                                    </div>
+                                                </div>
+                                                <span class="material-icons text-red-600">priority_high</span>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                                <div>
+                                                    <p><strong>Cliente:</strong> Ana García</p>
+                                                    <p><strong>Dirección:</strong> Carrera 43A #5-15</p>
+                                                </div>
+                                                <div>
+                                                    <p><strong>Peso:</strong> 2.5 kg</p>
+                                                    <p><strong>Tipo:</strong> Documento</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="p-4 border rounded-lg bg-white">
+                                            <div class="flex justify-between items-start mb-3">
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" class="mr-3">
+                                                    <div>
+                                                        <h4 class="font-semibold">LV-2024-001524</h4>
+                                                        <span class="status-badge status-ready">Listo</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                                <div>
+                                                    <p><strong>Cliente:</strong> Carlos Rodríguez</p>
+                                                    <p><strong>Dirección:</strong> Calle 10 #43-25</p>
+                                                </div>
+                                                <div>
+                                                    <p><strong>Peso:</strong> 1.2 kg</p>
+                                                    <p><strong>Tipo:</strong> Paquete</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Assignment Panel -->
+                                <div class="col-span-4">
+                                    <div class="border-2 dashed border-gray-300 rounded-lg p-4">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                            <span class="material-icons mr-2">person_add</span>
+                                            Asignar Transportista
+                                        </h3>
+                                        
+                                        <div class="text-center py-8">
+                                            <span class="material-icons text-gray-400 text-4xl mb-2">select_all</span>
+                                            <p class="text-gray-500">Selecciona paquetes para asignar</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista 7: Dashboard Almacén - Con Selección -->
+    <div class="page-break min-h-screen bg-white p-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">6b. Dashboard Almacén - Con Paquete y Transportista Seleccionados</h2>
+                <p class="text-xl text-gray-600">Vista con paquete seleccionado y transportista elegido para asignación</p>
+            </div>
+            
+            <div class="desktop-frame mockup-frame">
+                <div class="flex h-full">
+                    <!-- Sidebar -->
+                    <div class="w-64 bg-gradient-to-b from-gray-800 to-gray-700 text-white p-6">
+                        <div class="flex items-center mb-8">
+                            <span class="material-icons text-3xl mr-3">warehouse</span>
+                            <div>
+                                <h3 class="text-xl font-bold">La Vaquita</h3>
+                                <p class="text-gray-300 text-sm">Gestión de Almacén</p>
+                            </div>
+                        </div>
+                        
+                        <nav class="space-y-2">
+                            <div class="flex items-center p-3 rounded-lg bg-white/10">
+                                <span class="material-icons mr-3">dashboard</span>
+                                Dashboard
+                            </div>
+                        </nav>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="flex-1 p-4 bg-gray-50">
+                        <div class="bg-white rounded-xl p-6 h-full">
+                            <!-- Header -->
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-gray-800">Asignación de Paquetes</h3>
+                                    <p class="text-gray-600">Selecciona paquetes y asígnalos a transportistas</p>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="gradient-bg px-4 py-2 rounded-lg text-white">
+                                        <p class="text-sm opacity-90">Paquetes pendientes</p>
+                                        <p class="text-xl font-bold">12</p>
+                                    </div>
+                                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg">
+                                        <span class="material-icons mr-1 text-sm">assignment</span>
+                                        Asignar Seleccionados (1)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-12 gap-6">
+                                <!-- Packages Section -->
+                                <div class="col-span-8">
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="flex justify-between items-center">
+                                            <div class="flex space-x-2">
+                                                <button class="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm">
+                                                    Todos (15)
+                                                </button>
+                                                <button class="px-4 py-2 rounded-lg text-sm">
+                                                    Pendientes (12)
+                                                </button>
+                                            </div>
+                                            <input 
+                                                type="text" 
+                                                placeholder="Buscar por código..."
+                                                class="px-3 py-2 border border-gray-300 rounded-lg w-64"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- Package List with Selection -->
+                                    <div class="space-y-3">
+                                        <!-- Selected Package -->
+                                        <div class="p-4 border-2 border-blue-500 rounded-lg bg-blue-50 shadow-md">
+                                            <div class="flex justify-between items-start mb-3">
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" checked class="mr-3">
+                                                    <div>
+                                                        <h4 class="font-semibold">LV-2024-001523</h4>
+                                                        <span class="status-badge status-pending">Pendiente</span>
+                                                    </div>
+                                                </div>
+                                                <span class="material-icons text-red-600">priority_high</span>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                                <div>
+                                                    <p><strong>Cliente:</strong> Ana García</p>
+                                                    <p><strong>Dirección:</strong> Carrera 43A #5-15</p>
+                                                </div>
+                                                <div>
+                                                    <p><strong>Peso:</strong> 2.5 kg</p>
+                                                    <p><strong>Tipo:</strong> Documento</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="p-4 border rounded-lg bg-white">
+                                            <div class="flex justify-between items-start mb-3">
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" class="mr-3">
+                                                    <div>
+                                                        <h4 class="font-semibold">LV-2024-001524</h4>
+                                                        <span class="status-badge status-ready">Listo</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                                <div>
+                                                    <p><strong>Cliente:</strong> Carlos Rodríguez</p>
+                                                    <p><strong>Dirección:</strong> Calle 10 #43-25</p>
+                                                </div>
+                                                <div>
+                                                    <p><strong>Peso:</strong> 1.2 kg</p>
+                                                    <p><strong>Tipo:</strong> Paquete</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Assignment Panel - Active -->
+                                <div class="col-span-4">
+                                    <div class="border-2 border-green-500 rounded-lg p-4 bg-green-50">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                            <span class="material-icons mr-2">person_add</span>
+                                            Asignar Transportista
+                                        </h3>
+                                        
+                                        <div class="mb-4 p-3 bg-blue-50 rounded-lg">
+                                            <p class="text-sm text-blue-700">
+                                                <span class="material-icons text-sm mr-1">info</span>
+                                                1 paquete seleccionado
+                                            </p>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <input 
+                                                type="text" 
+                                                placeholder="Buscar transportista..."
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                                            />
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                                Transportistas disponibles
+                                            </label>
+                                            <div class="space-y-2">
+                                                <!-- Selected Transporter -->
+                                                <div class="border-2 border-green-500 rounded-lg p-3 bg-green-50">
+                                                    <div class="flex justify-between items-center mb-2">
+                                                        <h5 class="font-medium text-gray-800">Miguel Ángel Torres</h5>
+                                                        <div class="flex items-center text-yellow-500">
+                                                            <span class="material-icons text-sm">star</span>
+                                                            <span class="text-xs ml-1">4.8</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-xs text-gray-600 space-y-1">
+                                                        <p><strong>Vehículo:</strong> Moto - Yamaha XTZ</p>
+                                                        <p><strong>Zona:</strong> El Poblado, Laureles</p>
+                                                        <p><strong>Capacidad:</strong> 15 kg</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="border rounded-lg p-3">
+                                                    <div class="flex justify-between items-center mb-2">
+                                                        <h5 class="font-medium text-gray-800">Sandra M. Vargas</h5>
+                                                        <div class="flex items-center text-yellow-500">
+                                                            <span class="material-icons text-sm">star</span>
+                                                            <span class="text-xs ml-1">4.9</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-xs text-gray-600 space-y-1">
+                                                        <p><strong>Vehículo:</strong> Carro - Spark</p>
+                                                        <p><strong>Zona:</strong> Estadio, Buenos Aires</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button class="w-full bg-green-600 text-white py-3 rounded-lg">
+                                            <span class="material-icons mr-2">check_circle</span>
+                                            Confirmar Asignación
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen Final -->
+    <div class="page-break min-h-screen gradient-bg text-white flex items-center justify-center">
+        <div class="text-center max-w-4xl mx-auto p-8">
+            <div class="glass-effect text-gray-800 rounded-3xl p-12">
+                <h2 class="text-5xl font-bold mb-8">Resumen del Sistema</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="text-center">
+                        <span class="material-icons text-5xl text-blue-600 mb-4">phone_android</span>
+                        <h3 class="text-2xl font-bold mb-4">5 Vistas Móviles</h3>
+                        <ul class="text-left space-y-2">
+                            <li>• Login de usuarios</li>
+                            <li>• Registro con tipos de usuario</li>
+                            <li>• Programación de recolecciones</li>
+                            <li>• Notificaciones para recolectores</li>
+                            <li>• Confirmación de entregas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="text-center">
+                        <span class="material-icons text-5xl text-blue-600 mb-4">desktop_windows</span>
+                        <h3 class="text-2xl font-bold mb-4">1 Vista de Escritorio</h3>
+                        <ul class="text-left space-y-2">
+                            <li>• Dashboard de gestión completo</li>
+                            <li>• Asignación de paquetes</li>
+                            <li>• Gestión de transportistas</li>
+                            <li>• Filtros y búsquedas avanzadas</li>
+                            <li>• Interface administrativa</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-8">
+                    <h3 class="text-3xl font-bold mb-4">Tecnologías Utilizadas</h3>
+                    <div class="flex justify-center space-x-8">
+                        <div class="text-center">
+                            <p class="font-bold">HTML5</p>
+                            <p class="text-sm">Estructura semántica</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-bold">Tailwind CSS</p>
+                            <p class="text-sm">Diseño responsivo</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-bold">Vanilla JavaScript</p>
+                            <p class="text-sm">Interactividad</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-bold">Material Icons</p>
+                            <p class="text-sm">Iconografía</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <p class="text-xl font-medium">Mockups interactivos listos para desarrollo</p>
+                    <p class="text-gray-600">Diseño optimizado para dispositivos móviles y escritorio</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
