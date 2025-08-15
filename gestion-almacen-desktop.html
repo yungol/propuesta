@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Almacén - La Vaquita</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            background: #f8fafc;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #1f2937 0%, #374151 100%);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-content {
+            background: white;
+            min-height: calc(100vh - 2rem);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .package-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .package-card.selected {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: rgba(251, 191, 36, 0.1);
+            color: #d97706;
+        }
+        
+        .status-ready {
+            background: rgba(34, 197, 94, 0.1);
+            color: #059669;
+        }
+        
+        .status-assigned {
+            background: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+        }
+        
+        .transporter-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .transporter-card:hover {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .transporter-card.selected {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #374151, #1f2937);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #1f2937, #111827);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #10b981, #059669);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(45deg, #059669, #047857);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .filter-tab {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .filter-tab.active {
+            background: #374151;
+            color: white;
+        }
+        
+        .search-input {
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .assignment-panel {
+            background: rgba(16, 185, 129, 0.05);
+            border: 2px dashed rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .assignment-panel.active {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="sidebar w-64 text-white p-6">
+            <div class="flex items-center mb-8">
+                <span class="material-icons text-3xl mr-3">warehouse</span>
+                <div>
+                    <h1 class="text-xl font-bold">La Vaquita</h1>
+                    <p class="text-gray-300 text-sm">Gestión de Almacén</p>
+                </div>
+            </div>
+            
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center p-3 rounded-lg bg-white/10">
+                    <span class="material-icons mr-3">dashboard</span>
+                    Dashboard
+                </a>
+                
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-4">
+            <div class="main-content p-6">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Asignación de Paquetes</h2>
+                        <p class="text-gray-600">Selecciona paquetes y asígnalos a transportistas</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="stats-card px-4 py-2 rounded-lg">
+                            <p class="text-sm opacity-90">Paquetes pendientes</p>
+                            <p class="text-xl font-bold" id="pendingCount">12</p>
+                        </div>
+                        <button class="btn-primary px-4 py-2 rounded-lg text-white">
+                            <span class="material-icons mr-1 text-sm">refresh</span>
+                            Actualizar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-12 gap-6">
+                    <!-- Packages Section -->
+                    <div class="col-span-8">
+                        <!-- Filters and Search -->
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="flex space-x-2">
+                                    <button class="filter-tab active px-4 py-2 rounded-lg text-sm font-medium" onclick="filterPackages('all')">
+                                        Todos (15)
+                                    </button>
+                                    <button class="filter-tab px-4 py-2 rounded-lg text-sm font-medium" onclick="filterPackages('pending')">
+                                        Pendientes (12)
+                                    </button>
+                                    <button class="filter-tab px-4 py-2 rounded-lg text-sm font-medium" onclick="filterPackages('ready')">
+                                        Listos (3)
+                                    </button>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Buscar por código o dirección..."
+                                        class="search-input px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 w-64"
+                                        id="searchInput"
+                                        oninput="searchPackages()"
+                                    />
+                                    <span class="material-icons text-gray-400">search</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <label class="flex items-center text-sm text-gray-600">
+                                    <input type="checkbox" id="selectAll" class="mr-2" onchange="toggleSelectAll()">
+                                    Seleccionar todos
+                                </label>
+                                <button 
+                                    id="bulkAssignBtn"
+                                    class="btn-success px-4 py-2 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                                    onclick="showAssignmentPanel()"
+                                    disabled
+                                >
+                                    <span class="material-icons mr-1 text-sm">assignment</span>
+                                    Asignar Seleccionados (<span id="selectedCount">0</span>)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Packages List -->
+                        <div id="packagesList" class="space-y-3 max-h-96 overflow-y-auto">
+                            <!-- Package cards will be generated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Assignment Panel -->
+                    <div class="col-span-4">
+                        <div id="assignmentPanel" class="assignment-panel p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <span class="material-icons mr-2">person_add</span>
+                                Asignar Transportista
+                            </h3>
+                            
+                            <div id="noSelection" class="text-center py-8">
+                                <span class="material-icons text-gray-400 text-4xl mb-2">select_all</span>
+                                <p class="text-gray-500">Selecciona paquetes para asignar</p>
+                            </div>
+
+                            <div id="assignmentContent" class="hidden">
+                                <div class="mb-4 p-3 bg-blue-50 rounded-lg">
+                                    <p class="text-sm text-blue-700">
+                                        <span class="material-icons text-sm mr-1">info</span>
+                                        <span id="selectionSummary">0 paquetes seleccionados</span>
+                                    </p>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Buscar transportista
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Nombre o ID del transportista..."
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                                        id="transporterSearch"
+                                        oninput="searchTransporters()"
+                                    />
+                                </div>
+
+                                <!-- Transporters List -->
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Transportistas disponibles
+                                    </label>
+                                    <div id="transportersList" class="space-y-2 max-h-48 overflow-y-auto">
+                                        <!-- Transporter cards will be generated by JavaScript -->
+                                    </div>
+                                </div>
+
+                                <button 
+                                    id="confirmAssignBtn"
+                                    class="w-full btn-success py-3 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                                    onclick="confirmAssignment()"
+                                    disabled
+                                >
+                                    <span class="material-icons mr-2">check_circle</span>
+                                    Confirmar Asignación
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let packages = [];
+        let transporters = [];
+        let selectedPackages = [];
+        let selectedTransporter = null;
+
+        // Sample data
+        const samplePackages = [
+            {
+                id: 'LV-2024-001523',
+                address: 'Carrera 43A #5-15, El Poblado',
+                city: 'Medellín',
+                customer: 'Ana García',
+                phone: '+57 300 123 4567',
+                status: 'pending',
+                priority: 'high',
+                weight: '2.5 kg',
+                createdAt: '2024-01-15 09:30',
+                type: 'Documento'
+            },
+            {
+                id: 'LV-2024-001524',
+                address: 'Calle 10 #43-25, Laureles',
+                city: 'Medellín',
+                customer: 'Carlos Rodríguez',
+                phone: '+57 301 987 6543',
+                status: 'ready',
+                priority: 'medium',
+                weight: '1.2 kg',
+                createdAt: '2024-01-15 10:15',
+                type: 'Paquete'
+            },
+            {
+                id: 'LV-2024-001525',
+                address: 'Carrera 70 #52-21, Estadio',
+                city: 'Medellín',
+                customer: 'María López',
+                phone: '+57 302 456 7890',
+                status: 'pending',
+                priority: 'low',
+                weight: '0.8 kg',
+                createdAt: '2024-01-15 11:00',
+                type: 'Sobre'
+            },
+            {
+                id: 'LV-2024-001526',
+                address: 'Av. Oriental #45-67, Buenos Aires',
+                city: 'Medellín',
+                customer: 'Juan Martínez',
+                phone: '+57 303 789 0123',
+                status: 'pending',
+                priority: 'high',
+                weight: '3.1 kg',
+                createdAt: '2024-01-15 11:30',
+                type: 'Paquete'
+            },
+            {
+                id: 'LV-2024-001527',
+                address: 'Calle 33 #70-25, Suramericana',
+                city: 'Medellín',
+                customer: 'Laura Pérez',
+                phone: '+57 304 234 5678',
+                status: 'ready',
+                priority: 'medium',
+                weight: '1.5 kg',
+                createdAt: '2024-01-15 12:00',
+                type: 'Documento'
+            }
+        ];
+
+        const sampleTransporters = [
+            {
+                id: 'T001',
+                name: 'Miguel Ángel Torres',
+                phone: '+57 310 111 2222',
+                vehicle: 'Moto - Yamaha XTZ',
+                rating: 4.8,
+                activeOrders: 3,
+                maxCapacity: '15 kg',
+                zone: 'El Poblado, Laureles',
+                status: 'available'
+            },
+            {
+                id: 'T002',
+                name: 'Sandra Milena Vargas',
+                phone: '+57 311 333 4444',
+                vehicle: 'Carro - Chevrolet Spark',
+                rating: 4.9,
+                activeOrders: 1,
+                maxCapacity: '25 kg',
+                zone: 'Estadio, Buenos Aires',
+                status: 'available'
+            },
+            {
+                id: 'T003',
+                name: 'Andrés Felipe Gómez',
+                phone: '+57 312 555 6666',
+                vehicle: 'Moto - Honda CBR',
+                rating: 4.7,
+                activeOrders: 5,
+                maxCapacity: '12 kg',
+                zone: 'Centro, Suramericana',
+                status: 'busy'
+            },
+            {
+                id: 'T004',
+                name: 'Diana Carolina Ruiz',
+                phone: '+57 313 777 8888',
+                vehicle: 'Bicicleta - Trek',
+                rating: 4.6,
+                activeOrders: 0,
+                maxCapacity: '8 kg',
+                zone: 'El Poblado',
+                status: 'available'
+            }
+        ];
+
+        // Initialize
+        function init() {
+            packages = [...samplePackages];
+            transporters = [...sampleTransporters];
+            renderPackages();
+            renderTransporters();
+        }
+
+        function renderPackages() {
+            const container = document.getElementById('packagesList');
+            container.innerHTML = '';
+
+            packages.forEach(pkg => {
+                const card = document.createElement('div');
+                card.className = `package-card p-4 border rounded-lg bg-white ${selectedPackages.includes(pkg.id) ? 'selected' : ''}`;
+                card.onclick = () => togglePackageSelection(pkg.id);
+
+                const statusClass = pkg.status === 'pending' ? 'status-pending' : 
+                                   pkg.status === 'ready' ? 'status-ready' : 'status-assigned';
+                
+                const priorityColor = pkg.priority === 'high' ? 'text-red-600' : 
+                                     pkg.priority === 'medium' ? 'text-yellow-600' : 'text-green-600';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex items-center">
+                            <input type="checkbox" ${selectedPackages.includes(pkg.id) ? 'checked' : ''} class="mr-3" onclick="event.stopPropagation()">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${pkg.id}</h4>
+                                <span class="status-badge ${statusClass}">
+                                    ${pkg.status === 'pending' ? 'Pendiente' : pkg.status === 'ready' ? 'Listo' : 'Asignado'}
+                                </span>
+                            </div>
+                        </div>
+                        <span class="material-icons ${priorityColor}">
+                            ${pkg.priority === 'high' ? 'priority_high' : pkg.priority === 'medium' ? 'remove' : 'keyboard_arrow_down'}
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                        <div>
+                            <p><strong>Cliente:</strong> ${pkg.customer}</p>
+                            <p><strong>Dirección:</strong> ${pkg.address}</p>
+                            <p><strong>Ciudad:</strong> ${pkg.city}</p>
+                        </div>
+                        <div>
+                            <p><strong>Teléfono:</strong> ${pkg.phone}</p>
+                            <p><strong>Peso:</strong> ${pkg.weight}</p>
+                            <p><strong>Tipo:</strong> ${pkg.type}</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-xs text-gray-500">
+                        Creado: ${pkg.createdAt}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function renderTransporters() {
+            const container = document.getElementById('transportersList');
+            container.innerHTML = '';
+
+            transporters.filter(t => t.status === 'available').forEach(transporter => {
+                const card = document.createElement('div');
+                card.className = `transporter-card p-3 border rounded-lg ${selectedTransporter === transporter.id ? 'selected' : ''}`;
+                card.onclick = () => selectTransporter(transporter.id);
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h5 class="font-medium text-gray-800">${transporter.name}</h5>
+                        <div class="flex items-center text-yellow-500">
+                            <span class="material-icons text-sm">star</span>
+                            <span class="text-xs ml-1">${transporter.rating}</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <p><strong>Vehículo:</strong> ${transporter.vehicle}</p>
+                        <p><strong>Zona:</strong> ${transporter.zone}</p>
+                        <p><strong>Capacidad:</strong> ${transporter.maxCapacity}</p>
+                        <p><strong>Pedidos activos:</strong> ${transporter.activeOrders}</p>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function togglePackageSelection(packageId) {
+            if (selectedPackages.includes(packageId)) {
+                selectedPackages = selectedPackages.filter(id => id !== packageId);
+            } else {
+                selectedPackages.push(packageId);
+            }
+            updateUI();
+        }
+
+        function selectTransporter(transporterId) {
+            selectedTransporter = transporterId;
+            renderTransporters();
+            updateAssignmentButton();
+        }
+
+        function updateUI() {
+            const selectedCount = selectedPackages.length;
+            document.getElementById('selectedCount').textContent = selectedCount;
+            document.getElementById('bulkAssignBtn').disabled = selectedCount === 0;
+            
+            if (selectedCount > 0) {
+                showAssignmentPanel();
+                document.getElementById('selectionSummary').textContent = `${selectedCount} paquete${selectedCount > 1 ? 's' : ''} seleccionado${selectedCount > 1 ? 's' : ''}`;
+            }
+            
+            renderPackages();
+        }
+
+        function showAssignmentPanel() {
+            if (selectedPackages.length > 0) {
+                document.getElementById('noSelection').classList.add('hidden');
+                document.getElementById('assignmentContent').classList.remove('hidden');
+                document.getElementById('assignmentPanel').classList.add('active');
+            }
+        }
+
+        function updateAssignmentButton() {
+            const btn = document.getElementById('confirmAssignBtn');
+            btn.disabled = !selectedTransporter || selectedPackages.length === 0;
+        }
+
+        function confirmAssignment() {
+            if (!selectedTransporter || selectedPackages.length === 0) return;
+
+            const transporter = transporters.find(t => t.id === selectedTransporter);
+            const assignedPackages = packages.filter(p => selectedPackages.includes(p.id));
+
+            const confirmation = confirm(
+                `¿Confirmar asignación?\n\n` +
+                `Transportista: ${transporter.name}\n` +
+                `Paquetes: ${selectedPackages.length}\n` +
+                `IDs: ${selectedPackages.join(', ')}`
+            );
+
+            if (confirmation) {
+                // Update package status
+                packages.forEach(pkg => {
+                    if (selectedPackages.includes(pkg.id)) {
+                        pkg.status = 'assigned';
+                        pkg.assignedTo = selectedTransporter;
+                        pkg.assignedAt = new Date().toLocaleString('es-ES');
+                    }
+                });
+
+                // Update transporter active orders
+                transporter.activeOrders += selectedPackages.length;
+
+                alert(`¡Asignación exitosa!\n\n${selectedPackages.length} paquete${selectedPackages.length > 1 ? 's' : ''} asignado${selectedPackages.length > 1 ? 's' : ''} a ${transporter.name}`);
+
+                // Reset selection
+                selectedPackages = [];
+                selectedTransporter = null;
+                document.getElementById('noSelection').classList.remove('hidden');
+                document.getElementById('assignmentContent').classList.add('hidden');
+                document.getElementById('assignmentPanel').classList.remove('active');
+
+                // Update UI
+                updateUI();
+                renderTransporters();
+                updatePendingCount();
+            }
+        }
+
+        function updatePendingCount() {
+            const pendingCount = packages.filter(p => p.status === 'pending').length;
+            document.getElementById('pendingCount').textContent = pendingCount;
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll').checked;
+            if (selectAll) {
+                selectedPackages = packages.filter(p => p.status !== 'assigned').map(p => p.id);
+            } else {
+                selectedPackages = [];
+            }
+            updateUI();
+        }
+
+        function filterPackages(filter) {
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter logic would go here
+            renderPackages();
+        }
+
+        function searchPackages() {
+            // Search logic would go here
+            renderPackages();
+        }
+
+        function searchTransporters() {
+            // Search logic would go here
+            renderTransporters();
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
