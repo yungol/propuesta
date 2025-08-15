@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Recolección - La Vaquita</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+        
+        .floating-shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 30%;
+            right: 20%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+        
+        .glass-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .notification-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .info-card {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .priority-high {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        
+        .map-placeholder {
+            background: linear-gradient(45deg, #e5e7eb, #f3f4f6);
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,.05) 10px, rgba(0,0,0,.05) 20px),
+                repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(0,0,0,.05) 10px, rgba(0,0,0,.05) 20px);
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="glass-container rounded-3xl p-6 w-full max-w-md shadow-2xl">
+            <!-- Header con notificación -->
+            <div class="text-center mb-6">
+                <div class="notification-pulse inline-flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full mb-4">
+                    <span class="material-icons text-white text-2xl">notifications_active</span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Nueva Recolección</h1>
+                <p class="text-gray-600">Solicitud de recolección disponible</p>
+            </div>
+
+            <!-- Información de la recolección -->
+            <div class="space-y-4 mb-6">
+                <!-- Almacén solicitante -->
+                <div class="info-card rounded-xl p-4">
+                    <div class="flex items-center">
+                        <span class="material-icons text-blue-600 mr-3">business</span>
+                        <div>
+                            <p class="text-sm text-gray-500">Almacén solicitante</p>
+                            <p class="font-semibold text-gray-800">Almacén La Vaquita Norte</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dirección -->
+                <div class="info-card rounded-xl p-4">
+                    <div class="flex items-start">
+                        <span class="material-icons text-blue-600 mr-3 mt-1">location_on</span>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-500">Dirección de recolección</p>
+                            <p class="font-semibold text-gray-800">Av. Principal 123, Col. Centro</p>
+                            <p class="text-sm text-gray-600">Ciudad de México, CDMX</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fecha y hora -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="info-card rounded-xl p-4">
+                        <div class="flex items-center">
+                            <span class="material-icons text-blue-600 mr-2">event</span>
+                            <div>
+                                <p class="text-xs text-gray-500">Fecha</p>
+                                <p class="font-semibold text-gray-800">15 Ene</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-card rounded-xl p-4">
+                        <div class="flex items-center">
+                            <span class="material-icons text-blue-600 mr-2">schedule</span>
+                            <div>
+                                <p class="text-xs text-gray-500">Hora</p>
+                                <p class="font-semibold text-gray-800">14:30</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalles adicionales -->
+                <div class="info-card rounded-xl p-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="material-icons text-blue-600 mr-2">inventory_2</span>
+                                <span class="text-sm text-gray-700">Embalaje especial</span>
+                            </div>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Incluido</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="material-icons text-blue-600 mr-2">payments</span>
+                                <span class="text-sm text-gray-700">Pago estimado</span>
+                            </div>
+                            <span class="font-semibold text-gray-800">$250.00</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="material-icons text-blue-600 mr-2">route</span>
+                                <span class="text-sm text-gray-700">Distancia</span>
+                            </div>
+                            <span class="text-sm text-gray-600">2.5 km</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prioridad -->
+                <div class="priority-high rounded-xl p-4">
+                    <div class="flex items-center">
+                        <span class="material-icons text-red-600 mr-3">priority_high</span>
+                        <div>
+                            <p class="text-sm text-red-600 font-medium">Prioridad Alta</p>
+                            <p class="text-xs text-red-500">Responder antes de 15 minutos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mapa placeholder -->
+                <div class="rounded-xl overflow-hidden">
+                    <div class="map-placeholder h-32 flex items-center justify-center">
+                        <div class="text-center">
+                            <span class="material-icons text-gray-400 text-3xl mb-2">map</span>
+                            <p class="text-xs text-gray-500">Vista previa del mapa</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notas del almacén -->
+                <div class="info-card rounded-xl p-4">
+                    <div class="flex items-start">
+                        <span class="material-icons text-blue-600 mr-3 mt-1">note</span>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Notas especiales</p>
+                            <p class="text-sm text-gray-700">"Favor de tocar el timbre dos veces. El material está empacado y listo en recepción."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="space-y-3">
+                <button 
+                    onclick="acceptCollection()"
+                    class="btn-hover w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-xl transition-all duration-300 transform flex items-center justify-center"
+                >
+                    <span class="material-icons mr-2">check_circle</span>
+                    Aceptar Recolección
+                </button>
+                
+                <button 
+                    onclick="rejectCollection()"
+                    class="btn-hover w-full bg-gray-700 hover:bg-red-600 text-white font-semibold py-3 rounded-xl transition-all duration-300 transform flex items-center justify-center"
+                >
+                    <span class="material-icons mr-2">cancel</span>
+                    Rechazar
+                </button>
+            </div>
+
+            <!-- Tiempo restante -->
+            <div class="text-center mt-4">
+                <p class="text-xs text-gray-500">Tiempo para responder</p>
+                <p id="countdown" class="text-lg font-bold text-orange-600">14:32</p>
+            </div>
+
+            <!-- Botón volver -->
+            <button 
+                onclick="goBack()" 
+                class="w-full mt-4 py-3 rounded-xl text-gray-600 font-medium hover:text-gray-800 transition-colors duration-300"
+            >
+                <span class="material-icons text-sm mr-1 align-middle">arrow_back</span>
+                Volver
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let countdownMinutes = 14;
+        let countdownSeconds = 32;
+
+        function updateCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            
+            if (countdownSeconds > 0) {
+                countdownSeconds--;
+            } else if (countdownMinutes > 0) {
+                countdownMinutes--;
+                countdownSeconds = 59;
+            } else {
+                // Tiempo agotado
+                countdownElement.textContent = "00:00";
+                countdownElement.classList.add('text-red-600');
+                alert('Tiempo agotado para responder a esta recolección.');
+                return;
+            }
+            
+            const formattedTime = `${String(countdownMinutes).padStart(2, '0')}:${String(countdownSeconds).padStart(2, '0')}`;
+            countdownElement.textContent = formattedTime;
+            
+            // Cambiar color cuando queden menos de 5 minutos
+            if (countdownMinutes < 5) {
+                countdownElement.classList.remove('text-orange-600');
+                countdownElement.classList.add('text-red-600');
+            }
+        }
+
+        function acceptCollection() {
+            const acceptBtn = document.querySelector('button[onclick="acceptCollection()"]');
+            acceptBtn.innerHTML = '<span class="material-icons mr-2 animate-spin">sync</span>Aceptando...';
+            acceptBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('¡Recolección aceptada! Se ha notificado al almacén y se ha agregado a tu agenda.');
+                // Simular redirección a vista de recolecciones activas
+                acceptBtn.innerHTML = '<span class="material-icons mr-2">check_circle</span>Aceptada';
+                acceptBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                acceptBtn.classList.add('bg-green-500');
+            }, 2000);
+        }
+
+        function rejectCollection() {
+            const rejectBtn = document.querySelector('button[onclick="rejectCollection()"]');
+            rejectBtn.innerHTML = '<span class="material-icons mr-2 animate-spin">sync</span>Rechazando...';
+            rejectBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Recolección rechazada. Se ha notificado al almacén para que busquen otro recolector.');
+                // Simular redirección a vista principal
+                rejectBtn.innerHTML = '<span class="material-icons mr-2">cancel</span>Rechazada';
+                rejectBtn.classList.remove('bg-gray-700', 'hover:bg-red-600');
+                rejectBtn.classList.add('bg-gray-500');
+            }, 1500);
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        // Iniciar countdown
+        setInterval(updateCountdown, 1000);
+
+        // Simular vibración de notificación al cargar (solo en dispositivos móviles)
+        if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 200]);
+        }
+
+        // Reproducir sonido de notificación si es posible
+        try {
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+Dxu2MfCDWH0fPPfC4H');
+            audio.volume = 0.3;
+            audio.play().catch(() => {}); // Ignorar errores de reproducción
+        } catch (e) {
+            // Ignorar si no se puede reproducir audio
+        }
+    </script>
+</body>
+</html>
