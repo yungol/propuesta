@@ -57,14 +57,9 @@
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
         }
         
-        .input-field {
-            background: rgba(255, 255, 255, 0.9);
-            transition: all 0.3s ease;
-        }
-        
-        .input-field:focus {
-            background: rgba(255, 255, 255, 1);
-            transform: scale(1.02);
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         
         .payment-option {
@@ -85,46 +80,11 @@
             border-color: rgba(59, 130, 246, 0.5);
         }
         
-        .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover:not(:disabled) {
+        .btn-hover:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        .checkbox-custom {
-            appearance: none;
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .checkbox-custom:checked {
-            background: #667eea;
-            border-color: #667eea;
-        }
-        
-        .checkbox-custom:checked::after {
-            content: '✓';
-            position: absolute;
-            color: white;
-            font-size: 14px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
     </style>
 </head>
 <body>
@@ -149,7 +109,7 @@
                     <textarea 
                         id="address" 
                         rows="3"
-                        class="input-field w-full px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-white/50 resize-none"
+                        class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
                         placeholder="Ingrese la dirección completa de recolección"
                         required
                     ></textarea>
@@ -164,7 +124,7 @@
                     <input 
                         type="date" 
                         id="date"
-                        class="input-field w-full px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                         required
                     />
                 </div>
@@ -178,7 +138,7 @@
                     <input 
                         type="time" 
                         id="time"
-                        class="input-field w-full px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                         required
                     />
                 </div>
@@ -189,7 +149,7 @@
                         <input 
                             type="checkbox" 
                             id="needsPackaging" 
-                            class="checkbox-custom mr-3"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mr-3"
                         />
                         <span class="material-icons text-sm mr-2">inventory_2</span>
                         Necesita embalaje especial
@@ -249,7 +209,7 @@
                     </label>
                     <select 
                         id="frequency"
-                        class="input-field w-full px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                     >
                         <option value="">Seleccione frecuencia</option>
                         <option value="weekly">Semanal</option>
@@ -267,7 +227,7 @@
                     <textarea 
                         id="notes" 
                         rows="2"
-                        class="input-field w-full px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-white/50 resize-none"
+                        class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
                         placeholder="Instrucciones especiales, comentarios..."
                     ></textarea>
                 </div>
@@ -276,7 +236,7 @@
                 <button 
                     type="submit" 
                     id="submitBtn"
-                    class="btn-primary w-full py-4 rounded-xl text-white font-semibold text-lg shadow-lg disabled:opacity-50"
+                    class="btn-hover w-full bg-gray-700 hover:bg-blue-600 text-white font-semibold py-4 rounded-xl transition-all duration-300 transform shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <span id="submitText">Programar Recolección</span>
                     <span id="loadingText" class="hidden">
