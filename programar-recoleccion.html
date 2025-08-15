@@ -85,6 +85,48 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
+        .file-upload-area {
+            border: 2px dashed rgba(156, 163, 175, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .file-upload-area:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .file-upload-area.dragover {
+            border-color: rgba(59, 130, 246, 0.8);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .photo-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+        }
+        
+        .remove-photo-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: rgba(239, 68, 68, 0.9);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-photo-btn:hover {
+            background: rgba(239, 68, 68, 1);
+            transform: scale(1.1);
+        }
+        
     </style>
 </head>
 <body>
@@ -155,6 +197,38 @@
                         Necesita embalaje especial
                     </label>
                     <p class="text-gray-500 text-xs mt-1 ml-8">Marque si requiere materiales especiales de embalaje</p>
+                </div>
+
+                <!-- Foto del Producto -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-medium mb-2">
+                        <span class="material-icons text-sm mr-1 align-middle">camera_alt</span>
+                        Foto del Producto (Opcional)
+                    </label>
+                    <div id="photoUploadArea" class="file-upload-area rounded-xl p-6 text-center">
+                        <input 
+                            type="file" 
+                            id="productPhoto" 
+                            accept="image/*" 
+                            capture="camera"
+                            class="hidden"
+                        />
+                        <div id="uploadPrompt">
+                            <span class="material-icons text-gray-400 text-4xl mb-2">add_photo_alternate</span>
+                            <p class="text-gray-600 font-medium mb-1">Toca para agregar foto</p>
+                            <p class="text-gray-500 text-xs">Arrastra una imagen o toma una foto</p>
+                        </div>
+                        <div id="photoPreview" class="hidden">
+                            <div class="relative inline-block">
+                                <img id="previewImage" class="photo-preview" />
+                                <div class="remove-photo-btn" onclick="removePhoto()">
+                                    <span class="material-icons text-white text-sm">close</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 text-xs mt-2">Toca para cambiar la imagen</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-500 text-xs mt-1">Ayuda al recolector a identificar mejor el producto</p>
                 </div>
 
                 <!-- Opciones de Pago -->
@@ -259,9 +333,86 @@
 
     <script>
         let selectedPaymentType = '';
+        let uploadedPhoto = null;
 
         // Set minimum date to today
         document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+        // Photo upload functionality
+        function initPhotoUpload() {
+            const photoUploadArea = document.getElementById('photoUploadArea');
+            const productPhotoInput = document.getElementById('productPhoto');
+            
+            // Click to upload
+            photoUploadArea.addEventListener('click', () => {
+                productPhotoInput.click();
+            });
+            
+            // File input change
+            productPhotoInput.addEventListener('change', handlePhotoSelect);
+            
+            // Drag and drop
+            photoUploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                photoUploadArea.classList.add('dragover');
+            });
+            
+            photoUploadArea.addEventListener('dragleave', () => {
+                photoUploadArea.classList.remove('dragover');
+            });
+            
+            photoUploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                photoUploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0 && files[0].type.startsWith('image/')) {
+                    handlePhotoFile(files[0]);
+                }
+            });
+        }
+        
+        function handlePhotoSelect(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handlePhotoFile(file);
+            }
+        }
+        
+        function handlePhotoFile(file) {
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('La imagen es demasiado grande. Por favor selecciona una imagen menor a 5MB.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedPhoto = e.target.result;
+                showPhotoPreview(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function showPhotoPreview(imageSrc) {
+            const uploadPrompt = document.getElementById('uploadPrompt');
+            const photoPreview = document.getElementById('photoPreview');
+            const previewImage = document.getElementById('previewImage');
+            
+            uploadPrompt.classList.add('hidden');
+            photoPreview.classList.remove('hidden');
+            previewImage.src = imageSrc;
+        }
+        
+        function removePhoto() {
+            const uploadPrompt = document.getElementById('uploadPrompt');
+            const photoPreview = document.getElementById('photoPreview');
+            const productPhotoInput = document.getElementById('productPhoto');
+            
+            uploadPrompt.classList.remove('hidden');
+            photoPreview.classList.add('hidden');
+            productPhotoInput.value = '';
+            uploadedPhoto = null;
+        }
 
         function selectPayment(type) {
             selectedPaymentType = type;
@@ -315,11 +466,17 @@
 
             // Simulate API call
             setTimeout(() => {
-                alert('¡Recolección programada exitosamente!');
+                let message = '¡Recolección programada exitosamente!';
+                if (uploadedPhoto) {
+                    message += '\nLa foto del producto ha sido incluida.';
+                }
+                alert(message);
                 
                 // Reset form
                 document.getElementById('scheduleForm').reset();
                 selectedPaymentType = '';
+                uploadedPhoto = null;
+                removePhoto(); // Reset photo upload area
                 document.querySelectorAll('.payment-option').forEach(option => {
                     option.classList.remove('selected');
                 });
@@ -341,6 +498,9 @@
         }
 
         document.getElementById('scheduleForm').addEventListener('submit', handleSubmit);
+        
+        // Initialize photo upload when page loads
+        document.addEventListener('DOMContentLoaded', initPhotoUpload);
     </script>
 </body>
 </html>
